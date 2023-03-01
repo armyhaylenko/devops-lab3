@@ -4,7 +4,7 @@
 The app is a simple node js app from express template.
 
 ## Building
-I used `docker build -t theirshadow/my-nodejs-app` to build the image.
+I used `docker build -t theirshadow/my-nodejs-app .` to build the image.
 
 ## Pushing
 I used `docker image push theirshadow/my-nodejs-app:lab3` to push the image to my repo.
