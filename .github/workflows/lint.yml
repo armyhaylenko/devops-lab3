@@ -32,8 +32,10 @@ jobs: # list of things to do
     needs: linting
     runs-on: ubuntu-latest # on which machine to run
     steps: # list of steps
-      - name: Create tag for the image
+      - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Create tag for the image
         run: date +%s > tag
 
       - name: Build docker image
