@@ -29,6 +29,7 @@ jobs: # list of things to do
 
   build:
     name: Build Docker image # job name (unique id)
+    needs: linting
     runs-on: ubuntu-latest # on which machine to run
     steps: # list of steps
       - uses: actions/checkout@v2
