@@ -32,15 +32,15 @@ jobs: # list of things to do
     needs: linting
     runs-on: ubuntu-latest # on which machine to run
     steps: # list of steps
-      - uses: actions/checkout@v2
       - name: Create tag for the image
+        uses: actions/checkout@v2
         run: date +%s > tag
 
       - name: Build docker image
         run: docker build . --file Dockerfile --tag theirshadow/my-nodejs-app:$(cat tag)
 
-      - uses: docker/login-action@v2
       - name: Log in to Docker Hub
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
