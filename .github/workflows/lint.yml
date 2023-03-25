@@ -31,6 +31,6 @@ jobs: # list of things to do
     name: Build Docker image # job name (unique id)
     runs-on: ubuntu-latest # on which machine to run
     steps: # list of steps
-      - name: Checkout
       - uses: actions/checkout@v2
+      - name: Build the docker image
         run: docker build . --file Dockerfile --tag my-nodejs-app:$(date +%s)
