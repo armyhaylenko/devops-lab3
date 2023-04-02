@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab3-nodejs-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lab3-nodejs-app
+  template:
+    metadata:
+      labels:
+        app: lab3-nodejs-app
+    spec:
+      containers:
+        - name: app
+          image: theirshadow/my-nodejs-app:1679772454
+          ports:
+            - containerPort: 3003
+          env:
+            - name: PORT
+              value: '3003'
+          imagePullPolicy: Always
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+              name: nginx-proxy
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 20
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab3-nodejs-app-service
+spec:
+  selector:
+    app.kubernetes.io/name: lab3-nodejs-app
+  type: NodePort
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: nginx-proxy # forwards requests to nginx reverse proxy
+      nodePort: 30003
